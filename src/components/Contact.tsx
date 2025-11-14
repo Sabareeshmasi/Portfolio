@@ -78,6 +78,7 @@ const Contact: React.FC = () => {
       id: 'email',
       icon: FaEnvelope,
       label: 'Email',
+      tooltip: 'sapsabareesh25@gmail.com',
       value: portfolioData.email,
       href: `mailto:${portfolioData.email}`,
       iconBg: 'bg-black',
@@ -88,6 +89,7 @@ const Contact: React.FC = () => {
       id: 'phone',
       icon: FaPhone,
       label: 'Phone',
+      tooltip: portfolioData.phone,
       value: portfolioData.phone,
       href: `tel:${portfolioData.phone}`,
       iconBg: 'bg-black',
@@ -98,6 +100,7 @@ const Contact: React.FC = () => {
       id: 'linkedin',
       icon: FaLinkedin,
       label: 'LinkedIn',
+      tooltip: 'sabareesh-linkedin',
       value: 'Connect with me',
       href: portfolioData.linkedinUrl,
       iconBg: 'bg-black',
@@ -109,6 +112,7 @@ const Contact: React.FC = () => {
       id: 'github',
       icon: FaGithub,
       label: 'GitHub',
+      tooltip: 'GitHub',
       value: 'View my work',
       href: portfolioData.githubUrl,
       iconBg: 'bg-black',
@@ -120,6 +124,7 @@ const Contact: React.FC = () => {
       id: 'facebook',
       icon: FaFacebook,
       label: 'Facebook',
+      tooltip: 'sabareesh-facebook',
       value: 'Connect with me',
       href: 'https://www.facebook.com/share/1UXLy7e3aD/',
       iconBg: 'bg-black',
@@ -131,6 +136,7 @@ const Contact: React.FC = () => {
       id: 'instagram',
       icon: FaInstagram,
       label: 'Instagram',
+      tooltip: 'sabareesh-instagram',
       value: 'Follow me',
       href: 'https://www.instagram.com/sabareeshmasi?igsh=bDdqZDltNnpjdzlw',
       iconBg: 'bg-black',
@@ -173,7 +179,7 @@ const Contact: React.FC = () => {
                     href={item.href}
                     target={item.external ? '_blank' : undefined}
                     rel={item.external ? 'noopener noreferrer' : undefined}
-                    className="group"
+                    className="group relative"
                     initial={{ opacity: 0, scale: 0.8 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: false, margin: "-50px" }}
@@ -181,6 +187,15 @@ const Contact: React.FC = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
+                    {/* Tooltip */}
+                    <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-10">
+                      <div className="bg-gray-900 text-white text-xs font-medium px-3 py-1.5 rounded-md whitespace-nowrap shadow-lg">
+                        {item.tooltip || item.label}
+                        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full">
+                          <div className="border-4 border-transparent border-t-gray-900"></div>
+                        </div>
+                      </div>
+                    </div>
                     <div className="w-20 h-20 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
                       <Icon className="text-white text-2xl" />
                     </div>
@@ -238,11 +253,9 @@ const Contact: React.FC = () => {
 
               {/* Message */}
               <div>
-                {!formData.message && (
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Write a message
-                  </label>
-                )}
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Write a message
+                </label>
                 <textarea
                   name="message"
                   value={formData.message}
