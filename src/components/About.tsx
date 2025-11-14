@@ -57,19 +57,10 @@ const About: React.FC = () => {
             {/* Description */}
             <div>
               <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                Recent university graduate passionate about <strong className="text-gray-900">AI development</strong>, 
-                <strong className="text-gray-900"> SAP integration</strong>, and <strong className="text-gray-900">prompt engineering</strong>. 
-                My goal is to make my mark in digital media and tech spaces.
+                I am an <strong className="text-gray-900">AI and SAP Developer</strong> with a strong focus on building reliable, efficient, and scalable solutions for enterprise environments. My work centers around developing intelligent systems, automation workflows, and data-driven applications that enhance business operations. I take a structured and analytical approach to problem-solving, ensuring every solution is well-designed, maintainable, and aligned with real-world needs.
               </p>
               <p className="text-gray-700 leading-relaxed text-base sm:text-lg mt-4">
-                Currently serving as a <strong className="text-gray-900">SAP AI NextGen Intern</strong> at IT Resonance, 
-                I've completed an intensive SAP ABAP development program with hands-on exposure to SAP BTP services, 
-                SAP BAS for development, and SAP BPA concepts.
-              </p>
-              <p className="text-gray-700 leading-relaxed text-base sm:text-lg mt-4">
-                My expertise spans building advanced <strong className="text-gray-900">RAG systems</strong> with re-ranking capabilities, 
-                developing conversational AI assistants integrated with SAP Fiori, and creating 
-                <strong className="text-gray-900"> multi-agent systems</strong> for complex automation workflows.
+                I am committed to continuous learning, professional growth, and delivering high-quality results. I aim to contribute to impactful projects where technology, innovation, and business value come together to create meaningful outcomes.
               </p>
             </div>
           </motion.div>
