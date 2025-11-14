@@ -1,12 +1,78 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaEnvelope, FaLinkedin, FaPhone, FaGithub, FaQuoteLeft } from 'react-icons/fa';
+import { FaEnvelope, FaLinkedin, FaPhone, FaGithub, FaFacebook, FaInstagram } from 'react-icons/fa';
+import emailjs from '@emailjs/browser';
 import { portfolioData } from '../data/portfolioData';
 
 /**
- * Contact Section with Darker Background, Attractive Logos, and Quotes
+ * Contact Section - Logos on Left, Form on Right
  */
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error' | null; message: string }>({ type: null, message: '' });
+
+  // EmailJS Configuration
+  const EMAILJS_SERVICE_ID = 'service_iz7i10q';
+  const EMAILJS_TEMPLATE_ID = 'template_3tzlf4h';
+  const EMAILJS_PUBLIC_KEY = '7JqNoF-RajuH9dP1D';
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      // Send email using EmailJS
+      const result = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          from_name: `${formData.firstName} ${formData.lastName}`,
+          from_email: formData.email,
+          reply_to: formData.email, // Set reply-to to sender's email
+          message: formData.message,
+          to_email: portfolioData.email, // Your email address
+        },
+        EMAILJS_PUBLIC_KEY
+      );
+
+      if (result.text === 'OK') {
+        setSubmitStatus({ 
+          type: 'success', 
+          message: 'Thank you! Your message has been sent successfully.' 
+        });
+        // Reset form
+        setFormData({
+          firstName: '',
+          lastName: '',
+          email: '',
+          message: ''
+        });
+      }
+    } catch (error: any) {
+      console.error('EmailJS Error:', error);
+      setSubmitStatus({ 
+        type: 'error', 
+        message: 'Sorry, there was an error sending your message. Please try again or contact me directly.' 
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
   const contactItems = [
     {
       id: 'email',
@@ -50,25 +116,28 @@ const Contact: React.FC = () => {
       borderColor: 'border-gray-200',
       external: true,
     },
-  ];
-
-  const quotes = [
     {
-      text: "The way to get started is to quit talking and begin doing.",
-      author: "Walt Disney"
+      id: 'facebook',
+      icon: FaFacebook,
+      label: 'Facebook',
+      value: 'Connect with me',
+      href: 'https://www.facebook.com/share/1UXLy7e3aD/',
+      iconBg: 'bg-black',
+      iconShadow: 'shadow-gray-300',
+      borderColor: 'border-gray-200',
+      external: true,
     },
     {
-      text: "Innovation distinguishes between a leader and a follower.",
-      author: "Steve Jobs"
+      id: 'instagram',
+      icon: FaInstagram,
+      label: 'Instagram',
+      value: 'Follow me',
+      href: 'https://www.instagram.com/sabareeshmasi?igsh=bDdqZDltNnpjdzlw',
+      iconBg: 'bg-black',
+      iconShadow: 'shadow-gray-300',
+      borderColor: 'border-gray-200',
+      external: true,
     },
-    {
-      text: "The future belongs to those who believe in the beauty of their dreams.",
-      author: "Eleanor Roosevelt"
-    },
-    {
-      text: "Success is not final, failure is not fatal: it is the courage to continue that counts.",
-      author: "Winston Churchill"
-    }
   ];
 
   return (
@@ -76,7 +145,7 @@ const Contact: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         {/* Section Header */}
         <motion.div
-          className="text-center mb-8"
+          className="text-center mb-12"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-50px" }}
@@ -91,99 +160,124 @@ const Contact: React.FC = () => {
           </p>
         </motion.div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
-          {/* Left Side - Contact Information */}
-          <div className="lg:col-span-2 space-y-3">
-            {contactItems.map((item, index) => {
-              const Icon = item.icon;
-              return (
-                <motion.a
-                  key={item.id}
-                  href={item.href}
-                  target={item.external ? '_blank' : undefined}
-                  rel={item.external ? 'noopener noreferrer' : undefined}
-                  className="group block"
-                  initial={{ opacity: 0, x: -30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: false, margin: "-50px" }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className={`bg-white border-2 ${item.borderColor} rounded-xl p-4 hover:shadow-lg transition-all duration-300 group-hover:border-opacity-60`}>
-                    <div className="flex items-center gap-4">
-                      {/* Attractive Icon Container */}
-                      <motion.div
-                        className={`flex-shrink-0 w-14 h-14 ${item.iconBg} rounded-xl flex items-center justify-center ${item.iconShadow} shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-300`}
-                        whileHover={{ 
-                          rotate: [0, -5, 5, -5, 0],
-                          scale: 1.1
-                        }}
-                      >
-                        <Icon className="text-white text-lg" />
-                      </motion.div>
-                      
-                      {/* Text Content */}
-                      <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold text-gray-500 mb-0.5 uppercase tracking-wider">
-                          {item.label}
-                        </p>
-                        <p className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors truncate">
-                          {item.value}
-                        </p>
-                      </div>
-
-                      {/* Arrow Indicator */}
-                      <motion.div
-                        className="flex-shrink-0 text-gray-300 group-hover:text-blue-600 transition-colors"
-                        initial={{ x: 0 }}
-                        whileHover={{ x: 5 }}
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
-                      </motion.div>
+        {/* Main Content - Split Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+          {/* Left Side - Icons Grid (Dice Format 3x2) */}
+          <div className="flex justify-center lg:justify-start">
+            <div className="grid grid-cols-3 gap-6">
+              {contactItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <motion.a
+                    key={item.id}
+                    href={item.href}
+                    target={item.external ? '_blank' : undefined}
+                    rel={item.external ? 'noopener noreferrer' : undefined}
+                    className="group"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: false, margin: "-50px" }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <div className="w-20 h-20 bg-black rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow">
+                      <Icon className="text-white text-2xl" />
                     </div>
-                  </div>
-                </motion.a>
-              );
-            })}
+                  </motion.a>
+                );
+              })}
+            </div>
           </div>
 
-          {/* Right Side - Quotes */}
-          <div className="lg:col-span-1">
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: false, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              <div className="bg-white border border-gray-300 rounded-xl p-5 shadow-sm">
-                <div className="flex items-center gap-2 mb-4">
-                  <FaQuoteLeft className="text-2xl text-blue-600" />
-                  <h3 className="text-lg font-bold text-gray-900">Inspiration</h3>
+          {/* Right Side - Contact Form */}
+          <div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* First Name and Last Name - Side by Side */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name
+                  </label>
+                  <input
+                    type="text"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    className="w-full border-b-2 border-gray-900 focus:outline-none focus:border-gray-600 bg-transparent py-2"
+                  />
                 </div>
-                
-                <div className="space-y-4">
-                  {quotes.map((quote, index) => (
-                    <motion.div
-                      key={index}
-                      className="border-l-4 border-blue-500 pl-3"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                    >
-                      <p className="text-xs text-gray-700 italic mb-1 editorial-text">
-                        "{quote.text}"
-                      </p>
-                      <p className="text-xs text-gray-500 font-semibold">
-                        — {quote.author}
-                      </p>
-                    </motion.div>
-                  ))}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                    type="text"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    className="w-full border-b-2 border-gray-900 focus:outline-none focus:border-gray-600 bg-transparent py-2"
+                  />
                 </div>
               </div>
-            </motion.div>
+
+              {/* Email */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Email <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                  className="w-full border-b-2 border-gray-900 focus:outline-none focus:border-gray-600 bg-transparent py-2"
+                />
+              </div>
+
+              {/* Message */}
+              <div>
+                {!formData.message && (
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Write a message
+                  </label>
+                )}
+                <textarea
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Write a message"
+                  rows={6}
+                  className="w-full border-b-2 border-gray-900 focus:outline-none focus:border-gray-600 bg-transparent py-1 resize-none overflow-y-auto"
+                  style={{ lineHeight: '1.4' }}
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="px-8 py-3 bg-gray-800 text-white rounded-lg hover:bg-gray-900 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? 'Sending...' : 'Submit'}
+              </button>
+
+              {/* Status Message */}
+              {submitStatus.type && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className={`mt-4 p-4 rounded-lg ${
+                    submitStatus.type === 'success'
+                      ? 'bg-green-100 text-green-800 border border-green-300'
+                      : 'bg-red-100 text-red-800 border border-red-300'
+                  }`}
+                >
+                  <p className="text-sm font-medium">{submitStatus.message}</p>
+                </motion.div>
+              )}
+            </form>
           </div>
         </div>
       </div>
