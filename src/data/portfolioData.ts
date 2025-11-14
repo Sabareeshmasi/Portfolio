@@ -202,6 +202,6 @@ export const portfolioData = {
     },
   ] as Achievement[],
   
-  resumeUrl: 'https://drive.google.com/uc?export=download&id=1j2X_wXSUVQKBfnm_NWkKseCh_K4uvOxl', // Google Drive resume link
+  resumeUrl: 'https://drive.google.com/uc?export=download&id=1EkvJ0KgSloK0jzrnFF2q_VFqjN29XhNO', // Google Drive resume link
 };
 

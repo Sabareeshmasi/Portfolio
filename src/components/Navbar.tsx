@@ -51,8 +51,8 @@ const Navbar: React.FC = () => {
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? 'bg-white/95 backdrop-blur-sm shadow-md py-3'
-          : 'bg-white py-4'
+          ? 'bg-slate-800/95 backdrop-blur-sm shadow-md py-3'
+          : 'bg-slate-800 py-4'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
           {/* Logo - Name */}
           <motion.a
             href="#home"
-            className="text-2xl font-bold text-gray-900 tracking-wider"
+            className="text-2xl font-bold text-white tracking-wider"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={(e) => {
@@ -86,8 +86,8 @@ const Navbar: React.FC = () => {
                 }}
                 className={`relative text-sm font-semibold transition-colors ${
                   activeSection === item.id
-                    ? 'text-gray-900'
-                    : 'text-gray-700 hover:text-gray-900'
+                    ? 'text-white font-bold'
+                    : 'text-gray-300 hover:text-white'
                 }`}
                 whileHover={{ y: -2 }}
                 whileTap={{ y: 0 }}
@@ -101,7 +101,7 @@ const Navbar: React.FC = () => {
           <div className="md:hidden">
             <motion.button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="p-2 text-gray-900 hover:text-gray-600 transition-colors"
+              className="p-2 text-white hover:text-gray-300 transition-colors"
               whileTap={{ scale: 0.9 }}
               aria-label="Toggle menu"
             >
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            className="md:hidden bg-white border-t border-gray-200 mt-4 mx-4 p-4 shadow-lg rounded-lg"
+            className="md:hidden bg-slate-800 border-t border-slate-700 mt-4 mx-4 p-4 shadow-lg rounded-lg"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
@@ -135,8 +135,8 @@ const Navbar: React.FC = () => {
                 }}
                 className={`block px-4 py-3 mb-2 transition-all font-semibold text-sm rounded-lg ${
                   activeSection === item.id
-                    ? 'bg-gray-100 text-gray-900'
-                    : 'text-gray-700 hover:bg-gray-50'
+                    ? 'bg-slate-700 text-white'
+                    : 'text-gray-300 hover:bg-slate-700 hover:text-white'
                 }`}
                 initial={{ x: -20, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
